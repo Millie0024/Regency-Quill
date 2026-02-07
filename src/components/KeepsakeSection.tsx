@@ -30,8 +30,13 @@ const KeepsakeSection = () => {
               They are meant to be printed, folded, framed, and remembered.
             </p>
 
-            <p className="font-body text-sm text-muted-foreground leading-relaxed">
+            <p className="font-body text-sm text-muted-foreground leading-relaxed mb-6">
               Each creation is delivered as a beautifully styled PDF, designed to feel like a personal artifact — something worth holding in your hands.
+            </p>
+
+            <p className="font-display text-sm italic text-gold/70 leading-relaxed">
+              "Just because something is not perfect, does not make it any less worthy of love."
+              <span className="font-elegant not-italic text-xs text-muted-foreground ml-1">— Daphne Bridgerton</span>
             </p>
           </div>
         </div>
