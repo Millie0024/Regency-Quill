@@ -26,8 +26,13 @@ const CreationPaths = () => {
               Regency Love Letters
             </h3>
 
-            <p className="font-body text-muted-foreground leading-relaxed mb-6">
+            <p className="font-body text-muted-foreground leading-relaxed mb-4">
               Transform your modern thoughts into intimate, poetic letters — written as though meant to be folded, sealed, and cherished.
+            </p>
+
+            <p className="font-display text-sm italic text-gold/70 mb-6 leading-relaxed">
+              "You are the bane of my existence. And the object of all my desires."
+              <span className="font-elegant not-italic text-xs text-muted-foreground ml-1">— Anthony</span>
             </p>
 
             <ul className="space-y-3 mb-8">
@@ -63,8 +68,13 @@ const CreationPaths = () => {
               Society Announcements
             </h3>
 
-            <p className="font-body text-muted-foreground leading-relaxed mb-6">
-              Announce life's milestones through refined society papers addressed to dearest gentle readers.
+            <p className="font-body text-muted-foreground leading-relaxed mb-4">
+              Announce life's milestones through refined society papers in the style of Lady Whistledown — addressed to dearest gentle readers.
+            </p>
+
+            <p className="font-display text-sm italic text-gold/70 mb-6 leading-relaxed">
+              "Dearest Gentle Reader, this author brings you the most delighthat of news..."
+              <span className="font-elegant not-italic text-xs text-muted-foreground ml-1">— Lady Whistledown</span>
             </p>
 
             <ul className="space-y-3 mb-8">

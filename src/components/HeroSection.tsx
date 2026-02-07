@@ -29,12 +29,17 @@ const HeroSection = () => {
         </h1>
 
         {/* Subheading */}
-        <p className="font-body text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed opacity-0 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-          Create Regency-inspired love letters and society announcements — beautifully written, exquisitely styled, and meant to be kept.
+        <p className="font-body text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed opacity-0 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
+          Create Bridgerton-inspired love letters and Lady Whistledown society announcements — beautifully written, exquisitely styled, and meant to be kept.
+        </p>
+
+        <p className="font-display text-sm md:text-base italic text-gold/80 max-w-xl mx-auto mb-12 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
+          "To meet a beautiful woman is one thing, but to meet your best friend in the most beautiful of women is something entirely apart."
+          <span className="font-elegant not-italic text-xs text-muted-foreground ml-1">— Simon Basset</span>
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.5s" }}>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.6s" }}>
           <Button variant="rose" size="lg" className="font-elegant text-lg tracking-wide">
             Write a Love Letter
           </Button>
@@ -44,7 +49,7 @@ const HeroSection = () => {
         </div>
 
         {/* Preview cards */}
-        <div className="flex flex-col md:flex-row gap-8 justify-center items-center opacity-0 animate-fade-in-up" style={{ animationDelay: "0.7s" }}>
+        <div className="flex flex-col md:flex-row gap-8 justify-center items-center opacity-0 animate-fade-in-up" style={{ animationDelay: "0.8s" }}>
           <div className="relative group">
             <div className="absolute -inset-1 bg-gold/20 rounded-lg blur-sm group-hover:bg-gold/30 transition-colors duration-500" />
             <img

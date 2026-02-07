@@ -2,6 +2,7 @@ import HeroSection from "@/components/HeroSection";
 import ProductIntro from "@/components/ProductIntro";
 import CreationPaths from "@/components/CreationPaths";
 import HowItWorks from "@/components/HowItWorks";
+import BridgertonQuotes from "@/components/BridgertonQuotes";
 import KeepsakeSection from "@/components/KeepsakeSection";
 import DesignPhilosophy from "@/components/DesignPhilosophy";
 import FinalCTA from "@/components/FinalCTA";
@@ -13,6 +14,7 @@ const Index = () => {
       <HeroSection />
       <ProductIntro />
       <CreationPaths />
+      <BridgertonQuotes />
       <HowItWorks />
       <KeepsakeSection />
       <DesignPhilosophy />

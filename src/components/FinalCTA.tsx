@@ -11,6 +11,11 @@ const FinalCTA = () => {
           Begin writing something worth keeping.
         </h2>
 
+        <p className="font-display text-base md:text-lg italic text-muted-foreground mb-2 leading-relaxed">
+          "We chose to love each other, every single day. It is a choice, dearest. One that is never too late to make."
+        </p>
+        <p className="font-elegant text-sm text-gold/70 mb-4">— Violet Bridgerton</p>
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
           <Button variant="rose" size="lg" className="font-elegant text-lg tracking-wide">
             Write a Love Letter
