@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-regency.jpg";
 import loveLetterPreview from "@/assets/love-letter-preview.jpg";
 import societyPaperPreview from "@/assets/society-paper-preview.jpg";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -29,27 +30,54 @@ const HeroSection = () => {
         </h1>
 
         {/* Subheading */}
-        <p className="font-body text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed opacity-0 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-          Create Bridgerton-inspired love letters and Lady Whistledown society announcements — beautifully written, exquisitely styled, and meant to be kept.
+        <p
+          className="font-body text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed opacity-0 animate-fade-in-up"
+          style={{ animationDelay: "0.3s" }}
+        >
+          Create Bridgerton-inspired love letters and Lady Whistledown society
+          announcements — beautifully written, exquisitely styled, and meant to
+          be kept.
         </p>
 
-        <p className="font-display text-sm md:text-base italic text-gold/80 max-w-xl mx-auto mb-12 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
-          "To meet a beautiful woman is one thing, but to meet your best friend in the most beautiful of women is something entirely apart."
-          <span className="font-elegant not-italic text-xs text-muted-foreground ml-1">— Simon Basset</span>
+        <p
+          className="font-display text-sm md:text-base italic text-gold/80 max-w-xl mx-auto mb-12 opacity-0 animate-fade-in-up"
+          style={{ animationDelay: "0.4s" }}
+        >
+          "To meet a beautiful woman is one thing, but to meet your best friend
+          in the most beautiful of women is something entirely apart."
+          <span className="font-elegant not-italic text-xs text-muted-foreground ml-1">
+            — Simon Basset
+          </span>
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.6s" }}>
-          <Button variant="rose" size="lg" className="font-elegant text-lg tracking-wide">
-            Write a Love Letter
+        <div
+          className="flex flex-col sm:flex-row gap-4 justify-center mb-16 opacity-0 animate-fade-in-up"
+          style={{ animationDelay: "0.6s" }}
+        >
+          <Button
+            variant="rose"
+            size="lg"
+            className="font-elegant text-lg tracking-wide"
+          >
+            <Link to="/love-letter">Write a Love Letter</Link>
           </Button>
-          <Button variant="sage" size="lg" className="font-elegant text-lg tracking-wide">
-            Create a Society Announcement
+          <Button
+            variant="sage"
+            size="lg"
+            className="font-elegant text-lg tracking-wide"
+          >
+            <Link to="/society-announcement">
+              Create a Society Announcement
+            </Link>
           </Button>
         </div>
 
         {/* Preview cards */}
-        <div className="flex flex-col md:flex-row gap-8 justify-center items-center opacity-0 animate-fade-in-up" style={{ animationDelay: "0.8s" }}>
+        <div
+          className="flex flex-col md:flex-row gap-8 justify-center items-center opacity-0 animate-fade-in-up"
+          style={{ animationDelay: "0.8s" }}
+        >
           <div className="relative group">
             <div className="absolute -inset-1 bg-gold/20 rounded-lg blur-sm group-hover:bg-gold/30 transition-colors duration-500" />
             <img
@@ -58,7 +86,9 @@ const HeroSection = () => {
               className="relative w-56 md:w-64 rounded-lg shadow-lg border border-border/50 hover:shadow-xl transition-shadow duration-500"
               loading="lazy"
             />
-            <p className="mt-3 text-sm font-elegant text-muted-foreground italic">Love Letter</p>
+            <p className="mt-3 text-sm font-elegant text-muted-foreground italic">
+              Love Letter
+            </p>
           </div>
           <div className="relative group">
             <div className="absolute -inset-1 bg-gold/20 rounded-lg blur-sm group-hover:bg-gold/30 transition-colors duration-500" />
@@ -68,7 +98,9 @@ const HeroSection = () => {
               className="relative w-56 md:w-64 rounded-lg shadow-lg border border-border/50 hover:shadow-xl transition-shadow duration-500"
               loading="lazy"
             />
-            <p className="mt-3 text-sm font-elegant text-muted-foreground italic">Society Announcement</p>
+            <p className="mt-3 text-sm font-elegant text-muted-foreground italic">
+              Society Announcement
+            </p>
           </div>
         </div>
       </div>

@@ -1,73 +1,75 @@
-# Welcome to your Lovable project
+# 🌸 Regency Quill
 
-## Project info
+**Regency Quill** is an AI-powered writing experience that transforms modern words into **elegant Regency-era love letters and refined society announcements**, designed as timeless digital keepsakes.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Inspired by the charm, restraint, and drama of 19th-century high society, the platform allows users to craft beautifully written correspondence and export it as **print-ready parchment-style PDFs** — perfect for gifting, announcements, and moments worth remembering.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## ✨ Features
 
-**Use Lovable**
+### 💌 Regency Love Letters
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- Transform modern messages into romantic, period-inspired letters
+- Multiple tones: Gentle, Romantic, Passionate, Reserved
+- Structured as personal correspondence with elegant salutations and closings
+- Designed to feel handwritten and intimate
 
-Changes made via Lovable will be committed automatically to this repo.
+### 📰 Society Announcements
 
-**Use your preferred IDE**
+- Create refined, editorial-style announcements addressed to _Dearest Gentle Reader_
+- Ideal for engagements, weddings, celebrations, and milestones
+- Playful yet tasteful Regency-era prose
+- Newspaper-inspired layout with period charm
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 🎁 Keepsake-First Design
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- All outputs can be exported as **high-quality PDFs**
+- Parchment-inspired backgrounds and classic typography
+- Designed to be printed, gifted, framed, or saved
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🧠 How It Works
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+1. Write your message in modern English
+2. Choose the format:
+   - Love Letter
+   - Society Announcement
+3. Select tone and length
+4. AI transforms your words into Regency-era prose
+5. Preview the styled output
+6. Download as a PDF keepsake
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+## 🎨 Design Philosophy
+
+Regency Quill prioritizes **emotion and elegance over utility-first design**.
+
+- Soft parchment color palette
+- Serif typography inspired by historical letters and newspapers
+- Minimal, editorial layouts with generous spacing
+- No chatbot UI — a guided writing experience instead
+
+The goal is to make each creation feel like a **personal artifact**, not just generated text.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React + Vite
+- **Styling:** Tailwind CSS
+- **Backend:** Node.js / API routes
+- **AI:** OpenAI API (prompt-based text generation)
+- **PDF Export:** HTML → PDF rendering
+
+## 🚀 Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
 ```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
