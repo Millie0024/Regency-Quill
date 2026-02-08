@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,14 +13,67 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import RegencyFormLayout from "@/components/RegencyFormLayout";
+import { generateContent } from "../server/services/generateFrontend";
+import type { LetterPayload } from "@/types/generation";
 
 const LoveLetterForm = () => {
-  const [tone, setTone] = useState("");
-  const [length, setLength] = useState("medium");
+  const navigate = useNavigate();
+
+  // ─────────────────────────────
+  // Form State
+  // ─────────────────────────────
+  const [recipient, setRecipient] = useState("");
+  const [sender, setSender] = useState("");
+  const [message, setMessage] = useState("");
+
+  const [tone, setTone] = useState<LetterPayload["tone"]>("romantic");
+  const [length, setLength] = useState<LetterPayload["length"]>("medium");
+
   const [date, setDate] = useState(() => {
     const today = new Date();
     return today.toISOString().split("T")[0];
   });
+
+  const [loading, setLoading] = useState(false);
+  // ─────────────────────────────
+  // Submit Handler
+  // ─────────────────────────────
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!recipient.trim() || !message.trim()) {
+      alert("Pray, complete the required fields.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const payload = {
+        type: "letter" as const,
+        recipient,
+        sender,
+        message,
+        tone,
+        length,
+        date,
+      };
+
+      const res = await generateContent(payload);
+
+      navigate("/preview-page", {
+        state: {
+          type: "letter",
+          content: res.text,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      alert("The quill faltered. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <RegencyFormLayout
@@ -29,7 +83,7 @@ const LoveLetterForm = () => {
       quoteAuthor="Anthony Bridgerton"
       accentColor="rose"
     >
-      <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-8">
         {/* Recipient Name */}
         <div className="space-y-2">
           <Label className="font-display text-base tracking-wide text-foreground">
@@ -39,6 +93,8 @@ const LoveLetterForm = () => {
             To whom shall this letter be addressed?
           </p>
           <Input
+            value={recipient}
+            onChange={(e) => setRecipient(e.target.value)}
             placeholder="e.g., Eleanor"
             className="bg-background/50 border-border/60 font-body text-sm placeholder:text-muted-foreground/50 focus-visible:ring-rose/40 rounded-lg h-12"
             required
@@ -54,7 +110,9 @@ const LoveLetterForm = () => {
             Write freely in modern English — the Quill shall do the rest.
           </p>
           <Textarea
-            placeholder="I miss you every day and I can't wait to see you again. Every moment apart feels like an eternity..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="I miss you every day and I can't wait to see you again..."
             className="bg-background/50 border-border/60 font-body text-sm placeholder:text-muted-foreground/50 focus-visible:ring-rose/40 rounded-lg min-h-[140px] leading-relaxed"
             required
           />
@@ -74,26 +132,22 @@ const LoveLetterForm = () => {
           <Label className="font-display text-base tracking-wide text-foreground">
             Tone
           </Label>
-          <p className="font-body text-xs text-muted-foreground mb-1">
-            What manner of affection should the letter convey?
-          </p>
-          <Select value={tone} onValueChange={setTone}>
-            <SelectTrigger className="bg-background/50 border-border/60 font-body text-sm focus:ring-rose/40 rounded-lg h-12">
-              <SelectValue placeholder="Choose a tone…" />
+          <Select
+            value={tone}
+            onValueChange={(value) =>
+              setTone(
+                value as "gentle" | "romantic" | "passionate" | "reserved",
+              )
+            }
+          >
+            <SelectTrigger className="bg-background/50 border-border/60 font-body text-sm rounded-lg h-12">
+              <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-card border-border font-body">
-              <SelectItem value="gentle" className="font-body">
-                Gentle
-              </SelectItem>
-              <SelectItem value="romantic" className="font-body">
-                Romantic
-              </SelectItem>
-              <SelectItem value="passionate" className="font-body">
-                Passionate
-              </SelectItem>
-              <SelectItem value="reserved" className="font-body">
-                Reserved
-              </SelectItem>
+            <SelectContent>
+              <SelectItem value="gentle">Gentle</SelectItem>
+              <SelectItem value="romantic">Romantic</SelectItem>
+              <SelectItem value="passionate">Passionate</SelectItem>
+              <SelectItem value="reserved">Reserved</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -105,52 +159,37 @@ const LoveLetterForm = () => {
           </Label>
           <RadioGroup
             value={length}
-            onValueChange={setLength}
+            onValueChange={(value) =>
+              setLength(value as "short" | "medium" | "long")
+            }
             className="flex gap-6"
           >
-            {[
-              { value: "short", label: "Short" },
-              { value: "medium", label: "Medium" },
-              { value: "long", label: "Long" },
-            ].map((option) => (
+            {["short", "medium", "long"].map((value) => (
               <label
-                key={option.value}
-                className="flex items-center gap-2.5 cursor-pointer group"
+                key={value}
+                className="flex items-center gap-2.5 cursor-pointer"
               >
-                <RadioGroupItem
-                  value={option.value}
-                  className="border-rose/50 text-rose"
-                />
-                <span className="font-body text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                  {option.label}
-                </span>
+                <RadioGroupItem value={value} />
+                <span className="font-body text-sm capitalize">{value}</span>
               </label>
             ))}
           </RadioGroup>
         </div>
 
-        {/* Optional fields divider */}
-        <div className="flex items-center gap-4 py-2">
-          <div className="flex-1 h-px bg-border/60" />
-          <span className="font-elegant text-xs tracking-[0.2em] uppercase text-muted-foreground">
-            Optional Details
-          </span>
-          <div className="flex-1 h-px bg-border/60" />
-        </div>
-
+        {/* Optional Details */}
         <div className="grid sm:grid-cols-2 gap-6">
-          {/* Sender Name */}
           <div className="space-y-2">
             <Label className="font-display text-sm tracking-wide text-foreground">
               Sender Name
             </Label>
             <Input
+              value={sender}
+              onChange={(e) => setSender(e.target.value)}
               placeholder="Your name or alias"
-              className="bg-background/50 border-border/60 font-body text-sm placeholder:text-muted-foreground/50 focus-visible:ring-rose/40 rounded-lg h-12"
+              className="bg-background/50 border-border/60 font-body text-sm rounded-lg h-12"
             />
           </div>
 
-          {/* Date */}
           <div className="space-y-2">
             <Label className="font-display text-sm tracking-wide text-foreground">
               Date
@@ -159,7 +198,7 @@ const LoveLetterForm = () => {
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="bg-background/50 border-border/60 font-body text-sm focus-visible:ring-rose/40 rounded-lg h-12"
+              className="bg-background/50 border-border/60 font-body text-sm rounded-lg h-12"
             />
           </div>
         </div>
@@ -171,13 +210,10 @@ const LoveLetterForm = () => {
             variant="rose"
             size="lg"
             className="w-full font-elegant text-lg tracking-wide"
+            disabled={loading}
           >
-            Compose My Letter
+            {loading ? "Composing your letter…" : "Compose My Letter"}
           </Button>
-          <p className="font-elegant text-xs text-center text-muted-foreground mt-4 italic">
-            Your words shall be transformed with the grace and eloquence of the
-            Regency era.
-          </p>
         </div>
       </form>
     </RegencyFormLayout>
