@@ -15,6 +15,7 @@ import {
 import RegencyFormLayout from "@/components/RegencyFormLayout";
 import { generateContent } from "../server/services/generateFrontend";
 import type { AnnouncementPayload } from "@/types/generation";
+import SocietyPaperPreview from "../components/societyPreview/SocietyPaperPreview";
 
 /* ─────────────────────────────
    Types & Constants
@@ -51,10 +52,7 @@ const SocietyAnnouncementForm = () => {
 
   const [names, setNames] = useState("");
   const [message, setMessage] = useState("");
-
   const [tone, setTone] = useState<AnnouncementTone>("formal");
-
-  // slider uses number[], we map it → backend enum
   const [scandalIndex, setScandalIndex] = useState<number[]>([1]);
 
   const [loading, setLoading] = useState(false);
@@ -63,7 +61,40 @@ const SocietyAnnouncementForm = () => {
   const scandalLabel = scandalLabels[scandalLevel];
 
   // ─────────────────────────────
-  // Submit Handler
+  // Preview State
+  // ─────────────────────────────
+  const [showPreview, setShowPreview] = useState(false);
+  const [generatedTitle, setGeneratedTitle] = useState("");
+  const [generatedContent, setGeneratedContent] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  // ─────────────────────────────
+  // Helpers
+  // ─────────────────────────────
+  const payload: AnnouncementPayload = {
+    type: "announcement",
+    announcementType,
+    names,
+    message,
+    tone,
+    scandalLevel,
+  };
+
+  // Extract title from quotes
+  const parseAnnouncement = (text: string) => {
+    const titleMatch = text.match(/[“"]([^”"]+)[”"]/);
+
+    const title = titleMatch?.[1] || "A Scandalous Event";
+
+    const content = titleMatch
+      ? text.replace(titleMatch[0], "").trim()
+      : text.trim();
+
+    return { title, content };
+  };
+
+  // ─────────────────────────────
+  // Submit
   // ─────────────────────────────
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,32 +105,72 @@ const SocietyAnnouncementForm = () => {
     }
 
     try {
+      setShowPreview(true);
+      setIsGenerating(true);
+      setGeneratedContent("");
       setLoading(true);
 
-      const payload: AnnouncementPayload = {
-        type: "announcement",
-        announcementType,
-        names,
-        message,
-        tone,
-        scandalLevel,
-      };
-
       const res = await generateContent(payload);
+      const { title, content } = parseAnnouncement(res.text);
+      console.log(res);
 
-      navigate("/preview-page", {
-        state: {
-          type: "announcement",
-          content: res.text,
-        },
-      });
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      setGeneratedTitle(title);
+      setGeneratedContent(content);
     } catch (error) {
       console.error(error);
       alert("The quill faltered. Please try again.");
+      setShowPreview(false);
     } finally {
+      setIsGenerating(false);
       setLoading(false);
     }
   };
+
+  // ─────────────────────────────
+  // Refine
+  // ─────────────────────────────
+  const handleRefine = async () => {
+    try {
+      setIsGenerating(true);
+      setGeneratedContent("");
+
+      const res = await generateContent(payload);
+      const { title, content } = parseAnnouncement(res.text);
+
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      setGeneratedTitle(title);
+      setGeneratedContent(content);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  // ─────────────────────────────
+  // Inline Preview
+  // ─────────────────────────────
+  if (showPreview) {
+    return (
+      <RegencyFormLayout
+        title="Society Papers"
+        subtitle="Observe how the ton shall whisper of this most notable development."
+        quote="It is a truth universally acknowledged that a single scandal must be in want of an audience."
+        quoteAuthor="A Society Observer"
+        accentColor="sage"
+      >
+        <SocietyPaperPreview
+          title={generatedTitle}
+          content={generatedContent}
+          date={new Date().toLocaleDateString()}
+          isLoading={isGenerating}
+          onRefine={handleRefine}
+          onBack={() => setShowPreview(false)}
+        />
+      </RegencyFormLayout>
+    );
+  }
 
   return (
     <RegencyFormLayout

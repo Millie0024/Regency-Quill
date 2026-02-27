@@ -163,7 +163,7 @@ function toast({ ...props }: Toast) {
   };
 }
 
-function useToast() {
+function useToast(p0: { title: string; description: string; variant: string; }) {
   const [state, setState] = React.useState<State>(memoryState);
 
   React.useEffect(() => {

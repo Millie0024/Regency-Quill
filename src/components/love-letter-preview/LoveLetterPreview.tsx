@@ -1,30 +1,36 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import FormatSelector, { type PaperFormat } from "./FormatSelector";
-import BroadsheetFormat from "./BroadsheetFormat";
-import GazetteFormat from "./GazetteFormat";
-import ScandalSheetFormat from "./ScandalSheetFormat";
-import ColumnFormat from "./ColumnFormat";
+import LetterFormatSelector, {
+  type LetterFormat,
+} from "./LetterFormatSelector";
+import ParchmentFormat from "./ParchmentFormat";
+import SunlitFormat from "./SunlitFormat";
+import KissedFormat from "./KissedFormat";
+import WeatheredFormat from "./WeatheredFormat";
 
-interface SocietyPaperPreviewProps {
+interface LoveLetterPreviewProps {
   title: string;
   content: string;
+  recipientName?: string;
+  senderName?: string;
   date?: string;
   isLoading?: boolean;
   onRefine: () => void;
   onBack: () => void;
 }
 
-const SocietyPaperPreview = ({
+const LoveLetterPreview = ({
   title,
   content,
+  recipientName,
+  senderName,
   date,
   isLoading,
   onRefine,
   onBack,
-}: SocietyPaperPreviewProps) => {
+}: LoveLetterPreviewProps) => {
   const letterRef = useRef<HTMLDivElement>(null);
-  const [format, setFormat] = useState<PaperFormat>("broadsheet");
+  const [format, setFormat] = useState<LetterFormat>("parchment");
 
   const handleDownloadPDF = async () => {
     if (!letterRef.current) return;
@@ -34,7 +40,7 @@ const SocietyPaperPreview = ({
 
     const canvas = await html2canvas(letterRef.current, {
       scale: 1.5,
-      backgroundColor: "#FFFFFF",
+      backgroundColor: null,
       useCORS: true,
       scrollY: 0,
       windowHeight: letterRef.current.scrollHeight,
@@ -66,23 +72,32 @@ const SocietyPaperPreview = ({
     const y = (pdfHeight - imgHeight) / 2;
 
     pdf.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
-    pdf.save("society-announcement.pdf");
+
+    const filename = `love-letter${recipientName ? `-to-${recipientName.toLowerCase().replace(/\s+/g, "-")}` : ""}.pdf`;
+    pdf.save(filename);
+  };
+
+  const formatProps = {
+    title,
+    content,
+    recipientName,
+    senderName,
+    date,
+    isLoading,
   };
 
   const renderFormat = () => {
-    const props = { title, content, date, isLoading };
-
     switch (format) {
-      case "broadsheet":
-        return <BroadsheetFormat ref={letterRef} {...props} />;
-      case "gazette":
-        return <GazetteFormat ref={letterRef} {...props} />;
-      case "scandal":
-        return <ScandalSheetFormat ref={letterRef} {...props} />;
-      case "column":
-        return <ColumnFormat ref={letterRef} {...props} />;
+      case "parchment":
+        return <ParchmentFormat ref={letterRef} {...formatProps} />;
+      case "sunlit":
+        return <SunlitFormat ref={letterRef} {...formatProps} />;
+      case "kissed":
+        return <KissedFormat ref={letterRef} {...formatProps} />;
+      case "weathered":
+        return <WeatheredFormat ref={letterRef} {...formatProps} />;
       default:
-        return <BroadsheetFormat ref={letterRef} {...props} />;
+        return <ParchmentFormat ref={letterRef} {...formatProps} />;
     }
   };
 
@@ -107,7 +122,7 @@ const SocietyPaperPreview = ({
             className="font-elegant tracking-wide gap-2"
           >
             {isLoading ? (
-              <span className="inline-block w-4 h-4 border-2 border-foreground/40 border-t-foreground rounded-full animate-spin" />
+              <span className="inline-block w-4 h-4 border-2 border-rose/40 border-t-rose rounded-full animate-spin" />
             ) : (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -127,8 +142,9 @@ const SocietyPaperPreview = ({
           </Button>
 
           <Button
+            variant="rose"
             onClick={handleDownloadPDF}
-            className="font-elegant tracking-wide gap-2 bg-foreground text-card hover:bg-foreground/90 rounded-full shadow-md"
+            className="font-elegant tracking-wide gap-2"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -153,12 +169,12 @@ const SocietyPaperPreview = ({
       {/* Format selector */}
       <div className="space-y-2">
         <p className="font-elegant text-xs tracking-[0.2em] uppercase text-muted-foreground">
-          Choose your paper style
+          Choose your letter style
         </p>
-        <FormatSelector selected={format} onChange={setFormat} />
+        <LetterFormatSelector selected={format} onChange={setFormat} />
       </div>
 
-      {/* Preview card */}
+      {/* Preview - full scrollable view */}
       <div className="rounded-lg overflow-hidden shadow-xl border border-border">
         {renderFormat()}
       </div>
@@ -166,4 +182,4 @@ const SocietyPaperPreview = ({
   );
 };
 
-export default SocietyPaperPreview;
+export default LoveLetterPreview;

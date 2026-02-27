@@ -15,10 +15,10 @@ import {
 import RegencyFormLayout from "@/components/RegencyFormLayout";
 import { generateContent } from "../server/services/generateFrontend";
 import type { LetterPayload } from "@/types/generation";
+import LoveLetterPreview from "@/components/love-letter-preview/LoveLetterPreview";
+import { toast } from "@/components/ui/use-toast";
 
 const LoveLetterForm = () => {
-  const navigate = useNavigate();
-
   // ─────────────────────────────
   // Form State
   // ─────────────────────────────
@@ -35,46 +35,133 @@ const LoveLetterForm = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  // ─────────────────────────────
-  // Submit Handler
-  // ─────────────────────────────
+  const [showPreview, setShowPreview] = useState(false);
+  const [generatedContent, setGeneratedContent] = useState("");
+  const [generatedTitle, setGeneratedTitle] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  /* -----------------------------
+   Helpers
+----------------------------- */
+
+  const payload = {
+    type: "letter" as const,
+    recipient,
+    sender,
+    message,
+    tone,
+    length,
+  };
+
+  const parseLetter = (text: string) => {
+    // Match the first quoted string
+    const titleMatch = text.match(/"([^"]+)"/);
+
+    const title = titleMatch?.[1] || "A Private Correspondence";
+
+    // Remove the quoted title from the body
+    const content = titleMatch
+      ? text.replace(titleMatch[0], "").trim()
+      : text.trim();
+
+    return {
+      title,
+      content,
+    };
+  };
+
+  /* -----------------------------
+   Submit
+----------------------------- */
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!recipient.trim() || !message.trim()) {
-      alert("Pray, complete the required fields.");
+      toast({
+        title: "Missing fields",
+        description: "Please fill in both the recipient name and your message.",
+        variant: "destructive",
+      });
       return;
     }
 
     try {
+      setShowPreview(true);
+      setIsGenerating(true);
+      setGeneratedContent("");
       setLoading(true);
 
-      const payload = {
-        type: "letter" as const,
-        recipient,
-        sender,
-        message,
-        tone,
-        length,
-        date,
-      };
-
       const res = await generateContent(payload);
+      const { title, content } = parseLetter(res.text);
+      console.log(res);
 
-      navigate("/preview-page", {
-        state: {
-          type: "letter",
-          content: res.text,
-        },
+      // Simulated ink-drying delay ✒️
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      setGeneratedTitle(title);
+      setGeneratedContent(content);
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "The quill faltered",
+        description: "Please try again in a moment.",
+        variant: "destructive",
       });
-    } catch (error) {
-      console.error(error);
-      alert("The quill faltered. Please try again.");
+      setShowPreview(false);
     } finally {
+      setIsGenerating(false);
       setLoading(false);
     }
   };
 
+  /* -----------------------------
+   Refine
+----------------------------- */
+
+  const handleRefine = async () => {
+    try {
+      setIsGenerating(true);
+      setGeneratedContent("");
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      const res = await generateContent(payload);
+      const { title, content } = parseLetter(res.text);
+
+      setGeneratedTitle(title);
+      setGeneratedContent(content);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  /* -----------------------------
+   Preview
+----------------------------- */
+
+  if (showPreview) {
+    return (
+      <RegencyFormLayout
+        title="A letter from the heart"
+        subtitle="Behold — your sentiments, transformed with the grace and eloquence of the Regency era."
+        quote="You are the bane of my existence. And the object of all my desires."
+        quoteAuthor="Anthony Bridgerton"
+        accentColor="rose"
+      >
+        <LoveLetterPreview
+          title={generatedTitle}
+          content={generatedContent}
+          recipientName={recipient}
+          senderName={sender}
+          date={date}
+          isLoading={isGenerating}
+          onRefine={handleRefine}
+          onBack={() => setShowPreview(false)}
+        />
+      </RegencyFormLayout>
+    );
+  }
   return (
     <RegencyFormLayout
       title="Compose a Love Letter"
@@ -221,3 +308,6 @@ const LoveLetterForm = () => {
 };
 
 export default LoveLetterForm;
+function setGeneratedTitle(title: string) {
+  throw new Error("Function not implemented.");
+}
